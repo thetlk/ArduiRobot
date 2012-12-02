@@ -13,5 +13,8 @@
     <string name="config_hintMac">00:00:00:00:00:00</string>
     <string name="config_labelMoteur">Vitesse minimum des moteurs</string>
     <string name="config_hintMoteur">90</string>
+    
+    <!-- ControlActivity -->
+    <string name="control_welcome">Robot Control</string>
 
 </resources>

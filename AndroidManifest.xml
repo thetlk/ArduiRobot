@@ -27,6 +27,10 @@
             android:label="@string/config_welcome"
             android:name="boutoille.iut.robot.ConfigureActivity"></activity>
         
+        <activity
+            android:label="@string/control_welcome"
+            android:name="boutoille.iut.robot.ControlActivity"></activity>
+        
     </application>
 
 </manifest>
