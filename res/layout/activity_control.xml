@@ -61,4 +61,12 @@
 	    android:layout_marginRight="5dp"
 	    android:layout_marginLeft="5dp"/>
 
+	<ToggleButton
+	    android:id="@+id/switch_onOff"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignBottom="@+id/seekbar_moteurDroit"
+	    android:layout_toLeftOf="@+id/seekbar_moteurDroit"
+	    android:layout_marginRight="15dp"/>
+
 </RelativeLayout>

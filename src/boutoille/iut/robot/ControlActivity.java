@@ -2,11 +2,11 @@ package boutoille.iut.robot;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 public class ControlActivity extends Activity {
 	
@@ -15,6 +15,7 @@ public class ControlActivity extends Activity {
 	TextView debug_moteurGauche = null;
 	TextView debug_moteurDroit = null;
 	ProgressBar bar_batterie = null;
+	ToggleButton switch_onOff = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -27,6 +28,7 @@ public class ControlActivity extends Activity {
 		debug_moteurGauche = (TextView) findViewById(R.id.text_valueMoteurGauche);
 		debug_moteurDroit = (TextView) findViewById(R.id.text_valueMoteurDroit);
 		bar_batterie = (ProgressBar) findViewById(R.id.bar_batterie);
+		switch_onOff = (ToggleButton) findViewById(R.id.switch_onOff);
 		moteurGauche.setOnSeekBarChangeListener(listenerSeekbar);
 		moteurDroit.setOnSeekBarChangeListener(listenerSeekbar);
 	}
