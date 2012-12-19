@@ -29,7 +29,9 @@
         
         <activity
             android:label="@string/control_welcome"
-            android:name="boutoille.iut.robot.ControlActivity"></activity>
+            android:name="boutoille.iut.robot.ControlActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/ControlActivityTheme"></activity>
         
     </application>
 

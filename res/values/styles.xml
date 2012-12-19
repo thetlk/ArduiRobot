@@ -17,4 +17,9 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
+    <!-- ControlActivity theme -->
+    <style name="ControlActivityTheme" parent="android:Theme.Light.NoTitleBar.Fullscreen">
+        
+    </style>
+    
 </resources>
