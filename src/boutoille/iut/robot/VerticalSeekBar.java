@@ -48,6 +48,9 @@ public class VerticalSeekBar extends SeekBar {
 	private int lastProgress = 0;
 	public boolean onTouchEvent(MotionEvent event)
 	{
+		
+		int progress;
+		
 		if(!isEnabled())
 		{
 			return false;
@@ -57,6 +60,27 @@ public class VerticalSeekBar extends SeekBar {
 		{
 		case MotionEvent.ACTION_DOWN:
 			onChangeListener.onStartTrackingTouch(this);
+			
+			progress = getMax() - (int) (getMax() * event.getY() / getHeight());
+			
+			if(progress < 0)
+			{
+				progress = 0;
+			}
+			
+			if(progress > getMax())
+			{
+				progress = getMax();
+			}
+			
+			setProgress(progress);
+			
+			if(progress != lastProgress)
+			{
+				lastProgress = progress;
+				onChangeListener.onProgressChanged(this, progress, true);
+			}
+			onSizeChanged(getWidth(), getHeight(), 0, 0);
 			setPressed(true);
 			setSelected(true);
 			break;
@@ -64,7 +88,7 @@ public class VerticalSeekBar extends SeekBar {
 		case MotionEvent.ACTION_MOVE:
 			super.onTouchEvent(event);
 			
-			int progress = getMax() - (int) (getMax() * event.getY() / getHeight());
+			progress = getMax() - (int) (getMax() * event.getY() / getHeight());
 			
 			if(progress < 0)
 			{
@@ -103,6 +127,7 @@ public class VerticalSeekBar extends SeekBar {
 			break;
 		
 		default:
+			Log.i("Robot","Vertical Seek bar default  case : " + event.getAction());
 			return false;
 			
 		}
