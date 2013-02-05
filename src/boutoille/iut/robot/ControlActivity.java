@@ -1,6 +1,8 @@
 package boutoille.iut.robot;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
@@ -16,6 +18,9 @@ public class ControlActivity extends Activity {
 	TextView debug_moteurDroit = null;
 	ProgressBar bar_batterie = null;
 	ToggleButton switch_onOff = null;
+	ProgressDialog progressBluetooth = null;
+	
+	BluetoothThread lienBluetooth = null;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -31,6 +36,23 @@ public class ControlActivity extends Activity {
 		switch_onOff = (ToggleButton) findViewById(R.id.switch_onOff);
 		moteurGauche.setOnSeekBarChangeListener(listenerSeekbar);
 		moteurDroit.setOnSeekBarChangeListener(listenerSeekbar);
+	}
+	
+	@Override
+	protected void onStart()
+	{
+		super.onStart();
+		
+		progressBluetooth = ProgressDialog.show(this, "Connexion", "Connexion au robot ...", true, true);
+		lienBluetooth = new BluetoothThread(BluetoothAdapter.getDefaultAdapter(), progressBluetooth, "00:07:80:49:7F:3C");
+		
+		lienBluetooth.start();
+	}
+	
+	protected void onStop()
+	{
+		super.onStop();
+		lienBluetooth.arret();
 	}
 	
 	private OnSeekBarChangeListener listenerSeekbar = new OnSeekBarChangeListener()
