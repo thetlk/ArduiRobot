@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -22,7 +25,6 @@ public class ControlActivity extends Activity {
 	
 	BluetoothThread lienBluetooth = null;
 	
-	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -38,15 +40,13 @@ public class ControlActivity extends Activity {
 		moteurDroit.setOnSeekBarChangeListener(listenerSeekbar);
 	}
 	
-	@Override
 	protected void onStart()
 	{
 		super.onStart();
-		
-		progressBluetooth = ProgressDialog.show(this, "Connexion", "Connexion au robot ...", true, true);
-		lienBluetooth = new BluetoothThread(BluetoothAdapter.getDefaultAdapter(), progressBluetooth, "00:07:80:49:7F:3C");
-		
+		progressBluetooth = ProgressDialog.show(this, "Connexion", "Recherche du robot ...", true, true);
+		lienBluetooth = new BluetoothThread(BluetoothAdapter.getDefaultAdapter(), progressBluetooth, "00:07:80:49:7F:3C", cmdHandler);
 		lienBluetooth.start();
+		
 	}
 	
 	protected void onStop()
@@ -54,6 +54,15 @@ public class ControlActivity extends Activity {
 		super.onStop();
 		lienBluetooth.arret();
 	}
+	
+	private Handler cmdHandler = new Handler()
+	{
+		public void handleMessage(Message msg)
+		{
+			super.handleMessage(msg);
+			Log.i("rcv", msg.obj.toString());
+		}
+	};
 	
 	private OnSeekBarChangeListener listenerSeekbar = new OnSeekBarChangeListener()
 	{
