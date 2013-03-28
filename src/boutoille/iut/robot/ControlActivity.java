@@ -6,7 +6,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ProgressBar;
@@ -72,8 +71,6 @@ public class ControlActivity extends Activity {
 			
 			if(inBuffer.indexOf('\n') != -1) // \n présent dans le buffer
 			{
-				Log.d("ardui-recv", inBuffer);
-				
 				inBuffer = "";
 			}
 			
@@ -125,36 +122,18 @@ public class ControlActivity extends Activity {
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
 			
-			//int stepSize = 55;
 			int progress = seekBar.getProgress();
-			
-			/*progress = ((int)Math.round(progress/stepSize))*stepSize;
-			seekBar.setProgress(progress);*/
-			
 			progress = (progress-255); // 255 <=> 0, donc calcule donc notre + et -
-			
-			
-			//int diffG=0, diffD=0;
+
 			if(seekBar.equals(moteurGauche))
 			{
-				//diffG = valGauche - progress;
 				valGauche = progress;
-				//debug_moteurGauche.setText(""+progress);
 			} else {
-				//diffD = valDroit - progress;
-				valDroit = progress;
-				//debug_moteurDroit.setText(""+progress);
-				
+				valDroit = progress;				
 			}
 			
-			//if(diffD != 0 || diffG != 0)
-			//{
-				String commande = "move;"+valGauche+";"+valDroit+";\n";
-				
-				lienBluetooth.write(commande);				
-			//}
-				
-				
+			String commande = "move;"+valGauche+";"+valDroit+";\n";
+			lienBluetooth.write(commande);								
 				
 		}
 		
