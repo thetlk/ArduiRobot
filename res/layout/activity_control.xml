@@ -13,9 +13,10 @@
 	    android:layout_alignParentLeft="true"
 	    android:layout_alignParentBottom="true"
 	    android:layout_marginLeft="40dp"
-	    android:layout_marginTop="5dp"
-	    android:layout_marginBottom="5dp"
-	    android:max="255"/>
+	    android:layout_marginTop="130dp"
+	    android:layout_marginBottom="130dp"
+	    android:max="510"
+	    android:progress="255"/>
 	
 	<boutoille.iut.robot.VerticalSeekBar 
 	   	android:id="@+id/seekbar_moteurDroit"
@@ -25,8 +26,10 @@
 	    android:layout_alignParentRight="true"
 	    android:layout_alignParentBottom="true"
 	    android:layout_marginRight="40dp"
-	    android:layout_marginTop="5dp"
-	    android:layout_marginBottom="5dp" />
+	    android:layout_marginTop="130dp"
+	    android:layout_marginBottom="130dp"
+	    android:max="510"
+	    android:progress="255"/>
 
 	<ProgressBar
 	    android:id="@+id/bar_batterie"
@@ -68,6 +71,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_alignBottom="@+id/seekbar_moteurDroit"
 	    android:layout_toLeftOf="@+id/seekbar_moteurDroit"
-	    android:layout_marginRight="15dp"/>
+	    android:layout_marginRight="15dp"
+	    android:checked="true"/>
 
 </RelativeLayout>

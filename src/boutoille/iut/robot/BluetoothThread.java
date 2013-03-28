@@ -10,6 +10,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
+import android.util.Log;
 
 public class BluetoothThread extends Thread {
 
@@ -39,6 +40,7 @@ public class BluetoothThread extends Thread {
 		}
 
 		device = adapter.getRemoteDevice(macAddress);
+		Log.d("tag", "createInsecureRfcommSocketToServiceRecord");
 		
 		try {
 			dialog.setMessage("Connexion au robot ... ");
@@ -56,6 +58,7 @@ public class BluetoothThread extends Thread {
 		try {
 			istream = socket.getInputStream();
 			ostream = socket.getOutputStream();
+			Log.d("tag", "create streams");
 		} catch (Exception e)
 		{
 			e.printStackTrace();
@@ -82,11 +85,13 @@ public class BluetoothThread extends Thread {
 		
 	}
 
-	public void write(byte[] bytes)
+	public void write(String cmd)
 	{
 		
+		
 		try {
-			ostream.write(bytes);
+			Log.d("ardui-snd", cmd);
+			ostream.write(cmd.getBytes());
 		} catch (Exception e)
 		{
 			e.printStackTrace();

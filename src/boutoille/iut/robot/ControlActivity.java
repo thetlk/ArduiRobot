@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -24,6 +26,9 @@ public class ControlActivity extends Activity {
 	ProgressDialog progressBluetooth = null;
 	
 	BluetoothThread lienBluetooth = null;
+	String inBuffer = null;
+	int valDroit = 0;
+	int valGauche = 0;
 	
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -38,6 +43,8 @@ public class ControlActivity extends Activity {
 		switch_onOff = (ToggleButton) findViewById(R.id.switch_onOff);
 		moteurGauche.setOnSeekBarChangeListener(listenerSeekbar);
 		moteurDroit.setOnSeekBarChangeListener(listenerSeekbar);
+		switch_onOff.setOnCheckedChangeListener(onOffChange);
+		inBuffer = "";
 	}
 	
 	protected void onStart()
@@ -51,17 +58,48 @@ public class ControlActivity extends Activity {
 	
 	protected void onStop()
 	{
-		super.onStop();
 		lienBluetooth.arret();
+		super.onStop();
 	}
 	
 	private Handler cmdHandler = new Handler()
 	{
 		public void handleMessage(Message msg)
+		
 		{
 			super.handleMessage(msg);
-			Log.i("rcv", msg.obj.toString());
+			inBuffer += msg.obj.toString();
+			
+			if(inBuffer.indexOf('\n') != -1) // \n présent dans le buffer
+			{
+				Log.d("ardui-recv", inBuffer);
+				
+				inBuffer = "";
+			}
+			
 		}
+	};
+	
+	private OnCheckedChangeListener onOffChange = new OnCheckedChangeListener()
+	{
+
+		@Override
+		public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			
+			if(isChecked == false)
+			{
+				moteurGauche.setProgressAndThumb(255);
+				moteurDroit.setProgressAndThumb(255);
+				moteurGauche.setEnabled(false);
+				moteurDroit.setEnabled(false);
+				lienBluetooth.write("stop;\n");
+			} else {
+				moteurGauche.setEnabled(true);
+				moteurDroit.setEnabled(true);
+			}
+			
+		}
+		
 	};
 	
 	private OnSeekBarChangeListener listenerSeekbar = new OnSeekBarChangeListener()
@@ -74,9 +112,8 @@ public class ControlActivity extends Activity {
 			{
 				debug_moteurGauche.setText(""+progress);
 			} else {
-				debug_moteurDroit.setText(""+progress);
+				debug_moteurDroit.setText(""+progress);	
 			}
-			
 			
 		}
 
@@ -87,7 +124,38 @@ public class ControlActivity extends Activity {
 
 		@Override
 		public void onStopTrackingTouch(SeekBar seekBar) {
-
+			
+			//int stepSize = 55;
+			int progress = seekBar.getProgress();
+			
+			/*progress = ((int)Math.round(progress/stepSize))*stepSize;
+			seekBar.setProgress(progress);*/
+			
+			progress = (progress-255); // 255 <=> 0, donc calcule donc notre + et -
+			
+			
+			//int diffG=0, diffD=0;
+			if(seekBar.equals(moteurGauche))
+			{
+				//diffG = valGauche - progress;
+				valGauche = progress;
+				//debug_moteurGauche.setText(""+progress);
+			} else {
+				//diffD = valDroit - progress;
+				valDroit = progress;
+				//debug_moteurDroit.setText(""+progress);
+				
+			}
+			
+			//if(diffD != 0 || diffG != 0)
+			//{
+				String commande = "move;"+valGauche+";"+valDroit+";\n";
+				
+				lienBluetooth.write(commande);				
+			//}
+				
+				
+				
 		}
 		
 	};
